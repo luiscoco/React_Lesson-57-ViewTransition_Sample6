@@ -2,6 +2,7 @@ import React, { ViewTransition, startTransition, useMemo, useState } from 'react
 
 export default function ViewTransitionClassDemo() {
   const [mode, setMode] = useState('simple'); // 'simple' | 'byType' | 'none'
+  const [version, setVersion] = useState(1);
 
   const nextMode = useMemo(
     () =>
@@ -24,7 +25,10 @@ export default function ViewTransitionClassDemo() {
         : 'none'; // disables ViewTransition
 
   function cycleMode() {
-    startTransition(() => setMode(nextMode));
+    startTransition(() => {
+      setMode(nextMode);
+      setVersion(v => v + 1); // force a visual update so the transition is visible
+    });
   }
 
   return (
@@ -43,6 +47,9 @@ export default function ViewTransitionClassDemo() {
           <p>
             This panel uses the CSS view-transition styles from the lesson.
             Switch modes and trigger updates here to see the animations.
+          </p>
+          <p className="vt-version">
+            Current mode: <strong>{mode}</strong> · Update #{version}
           </p>
         </div>
       </ViewTransition>
